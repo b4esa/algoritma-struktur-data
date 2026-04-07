@@ -1,64 +1,81 @@
 #include <iostream>
-using std::cout;
-using std::cin;
+using namespace std;
 
-struct tumpuk{
-    int atas = -1;
-    int data[5];
-};
+const int maks = 5; 
 
-tumpuk Tumpuk;
-int max = 5;
+struct Stack {
+    int data[maks];
+    int atas;
+} Tumpuk;
 
-int kosong(){
-    if(Tumpuk.atas == -1)
-        return 1;
-    else
-        return 0;
+void inisialisasi() {
+ Tumpuk.atas = -1;
 }
 
-int penuh(){
-    if(Tumpuk.atas == max-1)
-        return 1;
-    else
-        return 0;
-}
-
-void input(int data){
-    if(kosong() == 1 || penuh() == 0){
-        Tumpuk.data[++Tumpuk.atas] = data;
-        cout << "Data " << Tumpuk.data[Tumpuk.atas] << " Masuk ke Stack\n";
-    }else
-        cout << "Tumpukan Penuh\n";
-}
-
-void hapus(){
-    if(kosong()==0){
-        cout << "Data teratas sudah terambil\n";
-        Tumpuk.atas--;
-    }else 
-        cout << " Data Kosong";
-}
-
-void tampil(){
-    if(kosong()==0){
-        for(int i = Tumpuk.atas; i >= 0; i--){
-            cout << "Tumpukan Ke " << i  << " = " << Tumpuk.data[i] <<  '\n';
-        }
-    }else 
-        cout << "Tumpukan Kosong\n";
-}
-void bersih(){
-    Tumpuk.atas = -1;
-    cout << "Tumpukan Kosong !\n";
-}
-
-int main(){
-    while(penuh() == 0){
-        int in;
-        cin >> in;
-        input(in);
+int kosong() { 
+    if (Tumpuk.atas == -1) {
+        return 1; 
+    } else {
+        return 0; 
     }
+}
+
+int penuh() {
+    if (Tumpuk.atas == maks - 1) {
+        return 1; 
+    } else {
+        return 0; 
+    }
+}
+
+void input(int data) {
+    if (penuh() == 0) {
+        Tumpuk.atas++;
+        Tumpuk.data[Tumpuk.atas] = data;
+        cout << "Data " << Tumpuk.data[Tumpuk.atas] << " Masuk ke Stack\n";
+    } else {
+        cout << "Tumpukan penuh\n";
+    }
+}
+
+void hapus() {
+    if (kosong() == 0) {
+        cout << "Data " << Tumpuk.data[Tumpuk.atas] << " Keluar dari Stack\n";
+        Tumpuk.atas--;
+    } else {
+        cout << "Tumpukan kosong\n";
+    }
+}
+
+void tampil() {
+    if (kosong() == 0) {
+        cout << "\nIsi Stack:\n";
+        for (int i = Tumpuk.atas; i >= 0; i--) {
+            cout << "Tumpukan Ke " << i << " = " << Tumpuk.data[i] << endl;
+        }
+        cout << endl;
+    } else {
+        cout << "Tumpukan kosong\n";
+    }
+}
+
+int main() {
+    inisialisasi(); 
+
+    input(10);
+    input(20);
+    input(30);
+
     tampil();
-    bersih();
+
+    hapus(); 
+
+    tampil(); 
+
+    input(40);
+    input(50);
+    
+    tampil();
+
+    return 0;
 }
