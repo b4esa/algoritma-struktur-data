@@ -164,39 +164,108 @@ int main()
 
     void hapusDepan() {
         if(isEmpty() == 0) {
-            TNode *hapus, *newTail;
-            hapus = tail;
-            dataHapus = hapus->data;
+            int n;
+            cout << "Masukkan posisi node ke-N dari depan yang ingin dihapus: ";
+            cin >> n;
 
-            if(head != tail) {
-               head = head->next;
-               tail->next = head;
-            } else {
-                init();
+            int total = 1;
+            TNode *bantu = head;
+            while(bantu->next != head) {
+                total++;
+                bantu = bantu->next;
             }
 
-            delete hapus;
+            if (n >= total) {
+                TNode *hapus = tail;
+                dataHapus = hapus->data;
+
+                if (head == tail) {
+                    init();
+                } else {
+                    TNode *newTail = head;
+                    while(newTail->next != tail) {
+                        newTail = newTail->next;
+                    }
+                    tail = newTail;
+                    tail->next = head;
+                }
+                delete hapus;
+                cout << "Karena N (" << n << ") >= jumlah node, maka Tail (\"" << dataHapus << "\") berhasil dihapus." << endl;
+            } 
+            else if (n == 1) {
+                TNode *hapus = head;
+                dataHapus = hapus->data;
+                
+                head = head->next;
+                tail->next = head;
+                
+                delete hapus;
+                cout << "Data ke-1 dari depan (Head) (\"" << dataHapus << "\") berhasil dihapus." << endl;
+            } 
+            else {
+                TNode *sebelum = head;
+                
+                for (int i = 1; i < n - 1; i++) {
+                    sebelum = sebelum->next;
+                }
+
+                TNode *hapus = sebelum->next;
+                dataHapus = hapus->data;
+
+                sebelum->next = hapus->next;
+
+                delete hapus;
+                cout << "Data ke-" << n << " dari depan (\"" << dataHapus << "\") berhasil dihapus." << endl;
+            }
         } else cout<<"Tidak terdapat data pada Linked List."<<endl;
     }
 
     void hapusBelakang() {
-      if(isEmpty() == 0) {
-            TNode *hapus, *newTail;
-            hapus = tail;
-            dataHapus = hapus->data;
+        if(isEmpty() == 0) {
+            int n;
+            cout << "Masukkan posisi node ke-N dari belakang yang ingin dihapus: ";
+            cin >> n;
 
-            if(head != tail) {
-                newTail = head;
-                while(newTail->next != tail) {
-                    newTail = newTail->next;
-                }
-                tail = newTail;
-                tail->next = head;
-            } else {
-                init();
+            int total = 1;
+            TNode *bantu = head;
+            while(bantu->next != head) {
+                total++;
+                bantu = bantu->next;
             }
-            
-            delete hapus;
+
+            if (n >= total) {
+                TNode *hapus = head;
+                dataHapus = hapus->data;
+                
+                if (head == tail) {
+                    init();
+                } else {
+                    head = head->next;
+                    tail->next = head;
+                }
+                
+                delete hapus;
+                cout << "Karena N (" << n << ") >= jumlah node, maka Head (\"" << dataHapus << "\") berhasil dihapus." << endl;
+            } else {
+                int step = total - n - 1; 
+                TNode *sebelum = head;
+                
+                for (int i = 0; i < step; i++) {
+                    sebelum = sebelum->next;
+                }
+
+                TNode *hapus = sebelum->next;
+                dataHapus = hapus->data;
+
+                sebelum->next = hapus->next;
+
+                if (hapus == tail) {
+                    tail = sebelum;
+                }
+
+                delete hapus;
+                cout << "Data ke-" << n << " dari belakang (\"" << dataHapus << "\") berhasil dihapus." << endl;
+            }
         } else cout<<"Tidak terdapat data pada Linked List."<<endl;
     }
 
@@ -215,18 +284,32 @@ int main()
 
     void reset() {
         if(isEmpty() == 0) {
-            TNode *bantu, *hapus;
-            bantu = head;
+            TNode *hapus;
+            int urutan = 1;
+
+            cout << "Memulai proses pembersihan Linked List..." << endl;
 
             do {
-                hapus = bantu;
-                bantu = bantu->next;
-                delete hapus;
-            } while(bantu != head);
+                hapus = head;
+                
+                cout << "Menghapus node ke-" << urutan << " [Isi Data: " << hapus->data << "]" << endl;
 
-            init();
-            cout<<"Seluruh elemen pada Linked List telah dibersihkan."<<endl;
-        } else cout<<"Tidak terdapat data pada Linked List."<<endl;
+                if (head == tail) {
+                    init();
+                } else {
+                    head = head->next;
+                    tail->next = head;
+                }
+
+                delete hapus;
+                urutan++;
+
+            } while(head != NULL);
+
+            cout << "Seluruh elemen pada Linked List telah berhasil dibersihkan." << endl;
+        } else {
+            cout << "Tidak terdapat data pada Linked List." << endl;
+        }
     }
 
     void cariData() {
